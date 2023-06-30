@@ -1,0 +1,61 @@
+package userPack;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+public class userDBUtil {
+	
+	public static List<user> validate(String userName, String password){ //
+
+		//Put User details to an ArrayList
+		ArrayList<user> us = new ArrayList<>();
+		
+		//Create DB connection
+		String url = "jdbc:mysql://localhost:3306/hotel";
+		String user = "root";
+		String pass = "";
+		
+		//Validate
+		
+		//Try Catch block to display error if error occurs
+		try {
+			
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			//Connection
+			Connection conne = DriverManager.getConnection(url, user, pass);
+			Statement st = conne.createStatement();
+			
+			//SQL Query
+			String sql = "select * from user where uname = '"+userName+"' and pwd ='"+password+"'";
+			
+			//Create result to run query
+			ResultSet rs = st.executeQuery(sql);
+			
+			//If user details Valid
+			if(rs.next()) {
+				int userid = rs.getInt(1);
+				String name = rs.getString(2);
+				String uEmail = rs.getString(3);
+				String uPhone = rs.getString(4);
+				String uname = rs.getString(5);
+				String pwd = rs.getString(6);
+				
+				//Create object for class user
+				user u = new user(userid, name, uEmail, uPhone, uname, pwd);
+				
+				//Pass user object to ArrayList object
+				us.add(u);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return us;  //Return Customer array object
+	}
+}

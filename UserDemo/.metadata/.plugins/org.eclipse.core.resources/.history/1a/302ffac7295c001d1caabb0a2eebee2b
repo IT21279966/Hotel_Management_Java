@@ -1,0 +1,8 @@
+package userPack;
+
+import java.util.List;
+
+public class userDBUtil {
+	
+	public static List<user> validate(String userName, String password) //
+}
